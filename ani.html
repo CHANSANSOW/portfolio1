@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Portfolio</title>
+  <style>
+    body { 
+      margin: 0; 
+      font-family: Arial, sans-serif; 
+      background: #1a1a1a; 
+      color: #fff; 
+      overflow-x: hidden; 
+      position: relative;
+    }
+    #techCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.25; /* Increased from 0.15 for more visibility */
+    }
+    .navbar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      height: 100vh;
+      background: rgba(42, 42, 42, 0.9);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: slideIn 1s ease-out forwards;
+      z-index: 1;
+    }
+    .profile-pic {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      margin-bottom: 25px;
+      border: 3px solid #00ccff;
+    }
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      margin: 15px 0;
+      font-size: 18px;
+      position: relative;
+      transition: color 0.3s;
+      opacity: 0;
+      animation: fadeInLeft 0.8s ease forwards;
+      animation-delay: calc(0.2s * var(--i));
+    }
+    .navbar a:hover {
+      color: #00ccff;
+    }
+    .navbar a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: #00ccff;
+      left: 0;
+      bottom: -5px;
+      transition: width 0.3s ease;
+    }
+    .navbar a:hover::after {
+      width: 100%;
+    }
+    .content {
+      margin-left: 270px;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+      background: #1a1a1a;
+      overflow: hidden;
+    }
+    /* .content::before {
+      content: '010101 101010 010101 101010 010101 101010 010101 101010';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      color: rgba(0, 204, 255, 0.1);
+      font-size: 20px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      animation: binaryFlow 10s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    } */
+    .section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative;
+    }
+    .section-div {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    #home .section-div {
+      background: rgba(44, 62, 80, 0.3);
+    }
+    #about .section-div {
+      background: rgba(52, 73, 94, 0.3);
+    }
+    #portfolio .section-div {
+      background: rgba(66, 66, 66, 0.3);
+    }
+    #contact .section-div {
+      background: rgba(85, 98, 112, 0.3);
+    }
+    .card {
+      width: 300px;
+      padding: 20px;
+      margin: 20px;
+      background: #333;
+      transition: transform 0.3s;
+      opacity: 0;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    #portfolio:target .card {
+      animation: cardFadeIn 1s ease forwards;
+      animation-delay: calc(0.2s * var(--i));
+    }
+    .title {
+      opacity: 0;
+      animation: titleFadeIn 1s ease forwards;
+    }
+    .title1 {
+      font-size: 80px;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      color: #00ccff;
+      opacity: 0;
+      animation: titleFadeIn 1.2s ease forwards 0.2s, blink 1s infinite;
+    }
+    .hire-btn {
+      padding: 12px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #00ccff;
+      background: rgba(44, 62, 80, 0.3);
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .hire-btn:hover {
+      background: #fff;
+      color: #00ccff;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 204, 255, 0.4);
+    }
+    .hire-btn::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      left: 50%;
+      top: 0;
+      transition: all 0.4s ease;
+      transform: translateX(-50%);
+    }
+    .hire-btn:hover::after {
+      width: 100%;
+    }
+    .hire-btn:active {
+      transform: translateY(1px);
+    }
+    @keyframes slideIn {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(0); }
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes cardFadeIn {
+      from { opacity: 0; transform: translateY(100px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes titleFadeIn {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes blink {
+      0% { opacity: 0.659; }
+      50% { opacity: 0.2; }
+      100% { opacity: 0.659; }
+    }
+    @keyframes binaryFlow {
+      0% { transform: translateY(-100%); opacity: 0; }
+      10% { opacity: 0.1; }
+      90% { opacity: 0.1; }
+      100% { transform: translateY(100%); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  
+  <nav class="navbar">
+    <img src="linkdinimg.png" class="profile-pic" alt="Profile Picture">
+    <a href="#home" style="--i: 1;">Home</a>
+    <a href="#about" style="--i: 2;">About</a>
+    <a href="#portfolio" style="--i: 3;">Portfolio</a>
+    <a href="#contact" style="--i: 4;">Contact</a>
+  </nav>
+
+  <div class="content">
+
+    <section id="home" class="section">
+      <div class="section-div">
+        <h1 class="title">Hi, I’m </h1><canvas id="techCanvas"></canvas>
+        <h1 class="title1">CHANDRASANJAY YANAMALA</h1>
+        <button type="submit" class="hire-btn">Hire me</button>
+      </div>
+    </section>
+    <section id="about" class="section">
+      <div class="section-div">
+        <h2>About Me</h2>
+        <p>I'm a creative professional...</p>
+      </div>
+    </section>
+    <section id="portfolio" class="section">
+      <div class="section-div">
+        <h2>Portfolio</h2>
+        <div class="card" style="--i: 1;">Project 1</div>
+        <div class="card" style="--i: 2;">Project 2</div>
+      </div>
+    </section>
+    <section id="contact" class="section">
+      <div class="section-div">
+        <h2>Contact</h2>
+        <p>Email me at...</p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('techCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const characters = '01'; // Only 1s and 0s
+    const fontSize = 16; // Slightly larger for visibility
+    const columns = canvas.width / fontSize;
+    const drops = [];
+
+    for (let i = 0; i < columns; i++) {
+      drops[i] = Math.random() * canvas.height / fontSize; // Random starting positions
+    }
+
+    function draw() {
+      // Semi-transparent black fill for trail effect
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.fillStyle = '#00ccff'; // Cyan to match theme
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = characters.charAt(Math.floor(Math.random() * characters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        // Random reset with slight variation
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.98) {
+          drops[i] = 0;
+        }
+        drops[i] += 0.5; // Slower fall speed
+      }
+    }
+
+    setInterval(draw, 50); // Slower update rate (~20 FPS) for smoother effect
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      drops.length = 0; // Reset drops array
+      for (let i = 0; i < canvas.width / fontSize; i++) {
+        drops[i] = Math.random() * canvas.height / fontSize;
+      }
+    });
+  </script>
+</body>
+</html>
